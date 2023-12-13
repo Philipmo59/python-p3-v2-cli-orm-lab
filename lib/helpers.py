@@ -68,28 +68,75 @@ def delete_department():
 # You'll implement the employee functions in the lab
 
 def list_employees():
-    pass
+    employee = Employee.get_all()
+    for person in employee:
+        print(person)
 
 
 def find_employee_by_name():
-    pass
+    name = input("Please enter Employee's name: ")
+    employee = Employee.find_by_name(name)
+    print(employee) if employee else print("No employee found")
 
 
 def find_employee_by_id():
-    pass
+    employee_id = input("Please enter Employee ID: ")
+    employee = Employee.find_by_id(employee_id)
+    print(employee) if employee else print("Not a valid ID")
 
 
 def create_employee():
-    pass
+    name = input("Please input Employee name: ")
+    job = input("What is your job?: ")
+    department_id = int(input("What is your department ID?: "))
+    try:
+        Employee.create(name,job,department_id)
+        print(f"{name} was created")
+    except:
+        print(f"Error creating {name}")
 
 
 def update_employee():
-    pass
+    name = input("Please input Employee name: ")
+    job = input("What is your job?: ")
+    department_id = int(input("What is your department ID?: "))
+    print(name,job,department_id)
+    print(Department.find_by_id(department_id))
+    if Department.find_by_id(department_id):
+        try:
+            Employee.update(name,job,department_id)
+        except:
+            print("Error occurred")
+    else:
+        print("Department not found")
 
 
 def delete_employee():
-    pass
+    employee_id = int(input("Which Employee id do you want gone?: "))
+
+    if employee := Employee.find_by_id(employee_id):
+        employee.delete()
+        print(f'Employee {employee_id} deleted')
+    else:
+        print(f'Employee {employee_id} not found')
+        
+
 
 
 def list_department_employees():
-    pass
+    department_id = int(input("Please input your department ID: "))
+    if department := Department.find_by_id(department_id):
+    #     employees = Employee.get_all()
+    #     # print(employees)
+    #     for employee in employees:
+    #         # print(employee)
+    #         # print(type(employee.department_id))
+    #         # print(type(department_id))
+    #         if employee.department_id == department_id:
+    #             print(employee) 
+    # else:
+    #     print("This Department does not exist")
+        for employee in department.employees():
+            print(employee)
+    else: 
+        print("This Department does not exist")
